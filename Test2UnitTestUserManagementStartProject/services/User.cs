@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Test2UnitTestUserManagementStartProject.services
 {
-    public class User
+    public class User 
     {
         [Key]
         public int Id { get; set; }
         [NotNull]
         public string Name { get; set; }
+               
     }
 }

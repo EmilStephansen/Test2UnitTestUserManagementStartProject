@@ -14,19 +14,85 @@ namespace Test2TestProject
         [TestMethod]
         public void UserManager_WithFakeDatabaseService_CanAddUserAndGetUserById()
         {
-            
-        }
+            // Arrange
+            var fakeDatabase = new FakeDatabaseService();
+            var userManager = new UserManager(fakeDatabase);
 
+            // Act
+            userManager.AddUser("Alice");
+            userManager.AddUser("Bob");
+            var retrievedUser = userManager.GetUserById(1);
+
+            // Assert
+            Assert.IsNotNull(retrievedUser);
+            Assert.AreEqual("Alice", retrievedUser.Name);
+        }
+        [TestMethod]
+        public void UserManager_WithFakeDatabaseService_CanAddUserAndGetAll()
+        {
+            // Arrange
+            var fakeDatabase = new FakeDatabaseService();
+            var userManager = new UserManager(fakeDatabase);
+
+            // Act
+            userManager.AddUser("Alice");
+            userManager.AddUser("Bob");
+
+            // Assert
+            CollectionAssert.AreEquivalent(userManager.GetAllUsers().Select(x => x.Name).ToArray(), new[] { "Alice", "Bob" });
+        }
         [TestMethod]
         public void UserManager_WithStubDatabaseService_ReturnsStubbedData()
         {
-            
-        }
+            // Arrange
+            var stubDatabase = new StubDatabaseService();
+            var userManager = new UserManager(stubDatabase);
 
+            // Act
+            var retrievedUser = userManager.GetUserById(1);
+
+            // Assert
+            Assert.IsNotNull(retrievedUser);
+            Assert.AreEqual("Charlie", retrievedUser.Name);
+        }
+        [TestMethod]
+        public void UserManager_WithStubDatabaseService_ReturnsStubbedCollectionOfData()
+        {
+            // Arrange
+            var stubDatabase = new StubDatabaseService();
+            var userManager = new UserManager(stubDatabase);
+            var expected = new List<User> { new User { Id = 1, Name = "Charlie" }, new User { Id = 2, Name = "Bobo" } };
+            var actual = userManager.GetAllUsers().ToList();
+            // Assert
+            CollectionAssert.AreEqual(actual.Select(x=>x.Name).ToList(), expected.Select(x=>x.Name).ToList());
+        }
         [TestMethod]
         public void UserManager_WithMockDatabaseService_ReturnsMockedData()
         {
-         
+            // Arrange
+            var mockDatabase = Substitute.For<IDatabaseService>();
+            mockDatabase.GetUserById(1).Returns(new User { Id = 1, Name = "Dee" });
+            var userManager = new UserManager(mockDatabase);
+            // Act
+            var retrievedUser = userManager.GetUserById(1);
+            // Assert
+            Assert.IsNotNull(retrievedUser);
+            Assert.AreEqual("Dee", retrievedUser.Name);
+        }
+
+
+        [TestMethod]
+        public void UserManager_WithMockDatabaseService_ReturnsMockedListData()
+        {
+            // Arrange
+            var mockDatabase = Substitute.For<IDatabaseService>();
+            var expected = new List<User> { new User { Id = 1, Name = "Charlie" }, new User { Id = 2, Name = "Bobo" } };
+            mockDatabase.GetAllUsers().Returns(expected);
+            var userManager = new UserManager(mockDatabase);
+            // Act
+            var actual = userManager.GetAllUsers();
+            // Assert
+            CollectionAssert.AreEqual(actual.Select(x => x.Name).ToList(), expected.Select(x => x.Name).ToList());
         }
     }
 }
