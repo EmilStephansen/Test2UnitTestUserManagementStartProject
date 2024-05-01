@@ -14,13 +14,12 @@ namespace Test2StartUpTestProject
         [TestInitialize]
         public void Setup()
         {
+            //create in memory database!
             sqlDataBase = new SqliteDatabaseService("DataSource=myshareddb;mode=memory;cache=shared");
         }
         [TestMethod]
         public void SqlLiteDatabaseHasInitialData()
         {
-            //create in memory database!
-            //IDatabaseService sqlDataBase = new SqliteDatabaseService("DataSource=myshareddb;mode=memory;cache=shared");
             var expected = "Pjerrot";
             var actual = sqlDataBase.GetUserById(1).Name;
             Assert.AreEqual(expected, actual);
