@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Test2UnitTestUserManagementStartProject.services;
 
-namespace Test2TestProject
+namespace Test2StartUpTestProject
 {
     [TestClass]
     public class UserManagerTests
