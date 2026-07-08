@@ -28,10 +28,8 @@ namespace Test2UnitTestUserManagementStartProject.services
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connectionString = connString;
-            var keepAliveConnection = new SqliteConnection(connectionString);
-            keepAliveConnection.Open();
-            options.UseSqlite(connectionString);
+            var connectionString = connString;      
+            options.UseSqlite(connString);
             
         }
         public void SaveUser(User user)
