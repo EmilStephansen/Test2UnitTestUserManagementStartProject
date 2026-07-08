@@ -39,7 +39,7 @@ namespace Test2StartUpTestProject
             userManager.AddUser("Bob");
 
             // Assert
-            CollectionAssert.AreEquivalent(userManager.GetAllUsers().Select(x => x.Name).ToArray(), new[] { "Alice", "Bob" });
+            CollectionAssert.AreEquivalent(new[] { "Alice", "Bob" }, userManager.GetAllUsers().Select(x => x.Name).ToArray());
         }
         [TestMethod]
         public void UserManager_WithStubDatabaseService_ReturnsStubbedData()
@@ -64,7 +64,7 @@ namespace Test2StartUpTestProject
             var expected = new List<User> { new User { Id = 1, Name = "Charlie" }, new User { Id = 2, Name = "Bobo" } };
             var actual = userManager.GetAllUsers().ToList();
             // Assert
-            CollectionAssert.AreEqual(actual.Select(x=>x.Name).ToList(), expected.Select(x=>x.Name).ToList());
+            CollectionAssert.AreEqual( expected.Select(x=>x.Name).ToList(), actual.Select(x=>x.Name).ToList());
         }
         [TestMethod]
         public void UserManager_WithMockDatabaseService_ReturnsMockedData()
@@ -92,7 +92,7 @@ namespace Test2StartUpTestProject
             // Act
             var actual = userManager.GetAllUsers();
             // Assert
-            CollectionAssert.AreEqual(actual.Select(x => x.Name).ToList(), expected.Select(x => x.Name).ToList());
+            CollectionAssert.AreEqual( expected.Select(x => x.Name).ToList(), actual.Select(x => x.Name).ToList());
         }
     }
 }
